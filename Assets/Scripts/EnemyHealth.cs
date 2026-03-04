@@ -15,6 +15,7 @@ public class EnemyHealth : MonoBehaviour
         hp -= dmg;
         if (hp <= 0f)
         {
+            GameManager.Instance.RegisterEnemyDeath();	
             Destroy(gameObject);
         }
     }

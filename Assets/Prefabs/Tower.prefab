@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ae334aad5a55624abca9557e323edaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerAttack
-  range: 6
+  range: 8
   enemyTag: Enemy
   fireRate: 1
   firePoint: {fileID: 0}
