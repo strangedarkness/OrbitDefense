@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
 
         if (spawnedEnemies >= totalEnemies && aliveEnemies <= 0)
         {
+	    FindObjectOfType<UIManager>().ShowVictory();
             Debug.Log("Level Complete!");
         }
     }
@@ -57,6 +58,7 @@ public class GameManager : MonoBehaviour
         {
             baseHP = 0;
             Debug.Log("Game Over");
+	    FindObjectOfType<UIManager>().ShowGameOver();
         }
 
         UpdateUI();

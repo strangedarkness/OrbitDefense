@@ -3,38 +3,66 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public GameObject enemyPrefab;
-    public int enemyCount = 30;
-    public float spawnDelay = 0.8f;
+    [Header("Enemy Prefabs")]
+    public GameObject basicEnemyPrefab;
+    public GameObject fastEnemyPrefab;
+    public GameObject swarmEnemyPrefab;
+    public GameObject tankEnemyPrefab;
+    public GameObject bossEnemyPrefab;
 
+    [Header("Spawn Settings")]
     public Transform spawnPoint;
     public Transform[] waypoints;
 
     void Start()
     {
-        // 告诉 GameManager 这一关总共有多少怪
-        GameManager.Instance.SetTotalEnemiesToSpawn(enemyCount);
+        // 5 Basic + 5 Fast + 9 Swarm + 2 Tank + 1 Boss = 22
+        GameManager.Instance.SetTotalEnemiesToSpawn(22);
 
-        StartCoroutine(SpawnEnemies());
+        StartCoroutine(SpawnSequence());
     }
 
-    IEnumerator SpawnEnemies()
+    IEnumerator SpawnSequence()
     {
-        for (int i = 0; i < enemyCount; i++)
+        // 5 Basic enemies
+        yield return StartCoroutine(SpawnWave(basicEnemyPrefab, 5, 0.1f));
+
+        yield return new WaitForSeconds(2f);
+
+        // 5 Fast enemies
+        yield return StartCoroutine(SpawnWave(fastEnemyPrefab, 5, 0.1f));
+
+        yield return new WaitForSeconds(3f);
+
+        // 9 Swarm enemies
+        yield return StartCoroutine(SpawnWave(swarmEnemyPrefab, 9, 0.1f));
+
+        yield return new WaitForSeconds(5f);
+
+        // 2 Tank enemies
+        yield return StartCoroutine(SpawnWave(tankEnemyPrefab, 2, 0.5f));
+
+        yield return new WaitForSeconds(2f);
+
+        // 1 Boss enemy
+        yield return StartCoroutine(SpawnWave(bossEnemyPrefab, 1, 0.1f));
+    }
+
+    IEnumerator SpawnWave(GameObject enemyPrefab, int count, float delay)
+    {
+        for (int i = 0; i < count; i++)
         {
             GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
 
-            // 设置敌人路径
             EnemyMovement movement = enemy.GetComponent<EnemyMovement>();
             if (movement != null)
             {
                 movement.waypoints = waypoints;
             }
 
-            // 更新怪物生成数量
             GameManager.Instance.RegisterEnemySpawn();
 
-            yield return new WaitForSeconds(spawnDelay);
+            yield return new WaitForSeconds(delay);
         }
     }
 }

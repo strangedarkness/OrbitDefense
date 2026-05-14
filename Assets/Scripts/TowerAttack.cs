@@ -7,7 +7,9 @@ public class TowerAttack : MonoBehaviour
     public string enemyTag = "Enemy";
 
     [Header("Fire")]
-    public float fireRate = 1.0f; // 每秒几发
+    public float fireRate = 1.0f;
+    public float damage = 5f;
+
     public Transform firePoint;
     public Bullet bulletPrefab;
 
@@ -16,10 +18,9 @@ public class TowerAttack : MonoBehaviour
 
     private void Start()
     {
-        // 如果你没手动指定 firePoint，就用塔自身位置
-        if (firePoint == null) firePoint = transform;
+        if (firePoint == null)
+            firePoint = transform;
 
-        // 每 0.2 秒找一次最近敌人
         InvokeRepeating(nameof(UpdateTarget), 0f, 0.2f);
     }
 
@@ -33,6 +34,7 @@ public class TowerAttack : MonoBehaviour
         foreach (var e in enemies)
         {
             float d = Vector3.Distance(transform.position, e.transform.position);
+
             if (d < shortest)
             {
                 shortest = d;
@@ -50,10 +52,8 @@ public class TowerAttack : MonoBehaviour
     {
         if (target == null) return;
 
-        // 可选：让塔朝向敌人（俯视塔防也可以不转）
-        // transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z));
-
         fireTimer -= Time.deltaTime;
+
         if (fireTimer <= 0f)
         {
             Shoot();
@@ -66,10 +66,13 @@ public class TowerAttack : MonoBehaviour
         if (bulletPrefab == null) return;
 
         Bullet b = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+
         b.SetTarget(target);
+
+        // 把塔的伤害传给子弹
+        b.damage = damage;
     }
 
-    // 在 Scene 里可视化攻击范围
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;

@@ -1,2 +1,17 @@
 fileFormatVersion: 2
 guid: 6b64075057884ff4a862ea767ccc5630
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - basicEnemyPrefab: {instanceID: 0}
+  - fastEnemyPrefab: {instanceID: 0}
+  - swarmEnemyPrefab: {instanceID: 0}
+  - tankEnemyPrefab: {instanceID: 0}
+  - bossEnemyPrefab: {instanceID: 0}
+  - spawnPoint: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

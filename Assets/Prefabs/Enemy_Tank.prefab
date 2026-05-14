@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -3911237291282190804}
   - component: {fileID: 1943319950872365924}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Enemy_Tank
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70,7 +70,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: b73fb3860206f834cb276a201f1b421e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d9a9a97e5d9ce24a90527c6d28957b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  maxHP: 10
+  maxHP: 70
   healthBarObject: {fileID: 8468059830444955773}
 --- !u!114 &1943319950872365924
 MonoBehaviour:
@@ -149,7 +149,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  speed: 6
+  speed: 1.5
 --- !u!1 &3283952855450648558
 GameObject:
   m_ObjectHideFlags: 0

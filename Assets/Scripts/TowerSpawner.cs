@@ -3,7 +3,10 @@ using UnityEngine;
 
 public class TowerSpawner : MonoBehaviour
 {
-    public GameObject towerPrefab;
+    [Header("Tower Prefabs")]
+    public GameObject basicTowerPrefab;
+    public GameObject rapidTowerPrefab;
+    public GameObject heavyTowerPrefab;
 
     private void Start()
     {
@@ -12,21 +15,27 @@ public class TowerSpawner : MonoBehaviour
 
     private IEnumerator SpawnRoutine()
     {
-        // 5秒生成第一个塔
+        // 5秒生成 Basic Tower
         yield return new WaitForSeconds(5f);
-        SpawnTower(new Vector3(-5f, 0f, 5f));
+        SpawnTower(basicTowerPrefab, new Vector3(-5f, 0f, 5f));
 
-        // 再等5秒 (10秒)
+        // 再等5秒
         yield return new WaitForSeconds(5f);
-        SpawnTower(new Vector3(5f, 0f, 5f));
+        SpawnTower(rapidTowerPrefab, new Vector3(5f, 0f, 5f));
 
-        // 再等5秒 (15秒)
+        // 再等5秒
         yield return new WaitForSeconds(5f);
-        SpawnTower(new Vector3(5f, 0f, -5f));
+        SpawnTower(heavyTowerPrefab, new Vector3(5f, 0f, -5f));
     }
 
-    private void SpawnTower(Vector3 pos)
+    private void SpawnTower(GameObject towerPrefab, Vector3 pos)
     {
+        if (towerPrefab == null)
+        {
+            Debug.LogWarning("Tower prefab is missing!");
+            return;
+        }
+
         Instantiate(towerPrefab, pos, Quaternion.identity);
     }
 }
