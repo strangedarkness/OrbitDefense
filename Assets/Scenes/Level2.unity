@@ -364,11 +364,11 @@ MonoBehaviour:
   m_text: 'Basic Tower
 
 
-    DMG: 10
+    DMG: 20
 
-    Rate: 1/s
+    Rate: 1.8/s
 
-    Range: 8'
+    Range: 10'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2258,10 +2258,10 @@ MonoBehaviour:
   swarmEnemyPrefab: {fileID: 531513502964745017, guid: 46620389e138db8469d94a7b4b8e2872, type: 3}
   tankEnemyPrefab: {fileID: 531513502964745017, guid: d9648c8c349cf164b8988de7363da467, type: 3}
   bossEnemyPrefab: {fileID: 531513502964745017, guid: 133a1ed25fb247946a49f83cb82878fe, type: 3}
-  prepareText: {fileID: 290900481}
-  prepareTime: 10
   spawnPoint: {fileID: 974662072}
   waypoints: []
+  prepareText: {fileID: 290900481}
+  prepareTime: 10
 --- !u!4 &788141838
 Transform:
   m_ObjectHideFlags: 0
@@ -2774,7 +2774,7 @@ MonoBehaviour:
 
     DMG: 2
 
-    Rate: 4/s
+    Rate: 12/s
 
     Range: 6'
   m_isRightToLeft: 0
@@ -3515,11 +3515,11 @@ MonoBehaviour:
   m_text: 'Heavy Tower
 
 
-    DMG: 25
+    DMG: 80
 
     Rate: 0.5/s
 
-    Range: 10'
+    Range: 12'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d9a9a97e5d9ce24a90527c6d28957b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  maxHP: 200
+  maxHP: 500
   healthBarObject: {fileID: 8468059830444955773}
 --- !u!114 &1943319950872365924
 MonoBehaviour:
@@ -149,7 +149,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  speed: 1
+  speed: 3
 --- !u!1 &3283952855450648558
 GameObject:
   m_ObjectHideFlags: 0

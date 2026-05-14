@@ -127,9 +127,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ae334aad5a55624abca9557e323edaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerAttack
-  range: 8
+  range: 6
   enemyTag: Enemy
-  fireRate: 4
+  fireRate: 12
   damage: 2
   firePoint: {fileID: 0}
   bulletPrefab: {fileID: -7964178743030696622, guid: 3071b5953110cca418b22d33841d3b44, type: 3}

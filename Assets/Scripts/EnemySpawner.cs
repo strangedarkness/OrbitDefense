@@ -11,25 +11,38 @@ public class EnemySpawner : MonoBehaviour
     public GameObject swarmEnemyPrefab;
     public GameObject tankEnemyPrefab;
     public GameObject bossEnemyPrefab;
-    public TMP_Text prepareText;
-    public float prepareTime = 10f;
+
     [Header("Spawn Settings")]
     public Transform spawnPoint;
     public Transform[] waypoints;
 
-    public class WaveData
+    [Header("Prepare Time")]
+    public TMP_Text prepareText;
+    public float prepareTime = 10f;
+
+    public class EnemySpawnData
     {
         public string enemyType;
         public int count;
-        public float spawnDelay;
-        public float waitAfterWave;
 
-        public WaveData(string enemyType, int count, float spawnDelay, float waitAfterWave)
+        public EnemySpawnData(string enemyType, int count)
         {
             this.enemyType = enemyType;
             this.count = count;
+        }
+    }
+
+    public class WaveData
+    {
+        public EnemySpawnData[] enemies;
+        public float spawnDelay;
+        public float waitAfterWave;
+
+        public WaveData(float spawnDelay, float waitAfterWave, EnemySpawnData[] enemies)
+        {
             this.spawnDelay = spawnDelay;
             this.waitAfterWave = waitAfterWave;
+            this.enemies = enemies;
         }
     }
 
@@ -40,7 +53,10 @@ public class EnemySpawner : MonoBehaviour
         int total = 0;
         foreach (WaveData wave in waves)
         {
-            total += wave.count;
+            foreach (EnemySpawnData enemy in wave.enemies)
+            {
+                total += enemy.count;
+            }
         }
 
         GameManager.Instance.SetTotalEnemiesToSpawn(total);
@@ -54,16 +70,80 @@ public class EnemySpawner : MonoBehaviour
 
         while (timer > 0)
         {
-            prepareText.text = "Prepare Time: " + Mathf.Ceil(timer);
+            if (prepareText != null)
+            {
+                prepareText.text = "Prepare Time: " + Mathf.Ceil(timer);
+            }
 
             timer -= Time.deltaTime;
-
             yield return null;
         }
 
-        prepareText.gameObject.SetActive(false);
+        if (prepareText != null)
+        {
+            prepareText.gameObject.SetActive(false);
+        }
 
-        StartCoroutine(SpawnSequence(waves));
+        yield return StartCoroutine(SpawnSequence(waves));
+    }
+
+    IEnumerator SpawnSequence(WaveData[] waves)
+    {
+        for (int i = 0; i < waves.Length; i++)
+        {
+            yield return StartCoroutine(SpawnWave(waves[i]));
+
+            if (i < waves.Length - 1)
+            {
+                yield return new WaitForSeconds(waves[i].waitAfterWave);
+            }
+        }
+    }
+
+    IEnumerator SpawnWave(WaveData wave)
+    {
+        foreach (EnemySpawnData enemyData in wave.enemies)
+        {
+            for (int i = 0; i < enemyData.count; i++)
+            {
+                SpawnEnemy(enemyData.enemyType);
+                yield return new WaitForSeconds(wave.spawnDelay);
+            }
+        }
+    }
+
+    void SpawnEnemy(string enemyType)
+    {
+        GameObject prefab = GetEnemyPrefab(enemyType);
+
+        GameObject enemy = Instantiate(prefab, spawnPoint.position, Quaternion.identity);
+
+        EnemyMovement movement = enemy.GetComponent<EnemyMovement>();
+        if (movement != null)
+        {
+            movement.waypoints = waypoints;
+        }
+
+        GameManager.Instance.RegisterEnemySpawn();
+    }
+
+    GameObject GetEnemyPrefab(string enemyType)
+    {
+        switch (enemyType)
+        {
+            case "Basic":
+                return basicEnemyPrefab;
+            case "Fast":
+                return fastEnemyPrefab;
+            case "Swarm":
+                return swarmEnemyPrefab;
+            case "Tank":
+                return tankEnemyPrefab;
+            case "Boss":
+                return bossEnemyPrefab;
+            default:
+                return basicEnemyPrefab;
+        }
     }
 
     WaveData[] GetLevelWaves()
@@ -74,11 +154,32 @@ public class EnemySpawner : MonoBehaviour
         {
             return new WaveData[]
             {
-                new WaveData("Basic", 5, 0.5f, 2f),
-                new WaveData("Fast", 5, 0.4f, 2f),
-                new WaveData("Swarm", 8, 0.2f, 3f),
-                new WaveData("Tank", 2, 1.0f, 2f),
-                new WaveData("Boss", 1, 0.5f, 0f)
+                new WaveData(0.1f, 5f, new EnemySpawnData[]
+                {
+                    new EnemySpawnData("Basic", 5)
+                }),
+
+                new WaveData(0.1f, 5f, new EnemySpawnData[]
+                {
+                    new EnemySpawnData("Fast", 3)
+                }),
+
+                new WaveData(0.1f, 5f, new EnemySpawnData[]
+                {
+                    new EnemySpawnData("Swarm", 12)
+                }),
+
+                new WaveData(0.1f, 5f, new EnemySpawnData[]
+                {
+                    new EnemySpawnData("Tank", 5)
+                }),
+
+                new WaveData(0.1f, 0f, new EnemySpawnData[]
+                {
+                    new EnemySpawnData("Basic", 5),
+		    new EnemySpawnData("Swarm", 10),
+                    new EnemySpawnData("Tank", 5)
+                })
             };
         }
 
@@ -86,11 +187,36 @@ public class EnemySpawner : MonoBehaviour
         {
             return new WaveData[]
             {
-                new WaveData("Basic", 8, 0.4f, 2f),
-                new WaveData("Swarm", 12, 0.15f, 3f),
-                new WaveData("Fast", 8, 0.3f, 2f),
-                new WaveData("Tank", 3, 0.8f, 2f),
-                new WaveData("Boss", 1, 0.5f, 0f)
+                new WaveData(0.1f, 5f, new EnemySpawnData[]
+                {
+                    new EnemySpawnData("Basic", 6),
+                    new EnemySpawnData("Fast", 6)
+                }),
+
+                new WaveData(0.1f, 5f, new EnemySpawnData[]
+                {
+                    new EnemySpawnData("Basic", 5),
+                    new EnemySpawnData("Swarm", 8)
+                }),
+
+                new WaveData(0.1f, 5f, new EnemySpawnData[]
+                {
+                    new EnemySpawnData("Fast", 6),
+                    new EnemySpawnData("Swarm", 8)
+                }),
+
+                new WaveData(0.1f, 5f, new EnemySpawnData[]
+                {
+                    new EnemySpawnData("Basic", 5),
+                    new EnemySpawnData("Tank", 5)
+                }),
+
+                new WaveData(0.1f, 0f, new EnemySpawnData[]
+                {
+                    new EnemySpawnData("Boss", 1),
+                    new EnemySpawnData("Basic", 10),
+                    new EnemySpawnData("Fast", 10)
+                })
             };
         }
 
@@ -98,69 +224,46 @@ public class EnemySpawner : MonoBehaviour
         {
             return new WaveData[]
             {
-                new WaveData("Swarm", 15, 0.12f, 2f),
-                new WaveData("Fast", 12, 0.25f, 2f),
-                new WaveData("Tank", 5, 0.7f, 3f),
-                new WaveData("Boss", 2, 1.0f, 0f)
+                new WaveData(0.1f, 5f, new EnemySpawnData[]
+                {
+                    new EnemySpawnData("Basic", 15),
+                    new EnemySpawnData("Fast", 5),
+                    new EnemySpawnData("Swarm", 5)
+                }),
+
+                new WaveData(0.1f, 5f, new EnemySpawnData[]
+                {
+                    new EnemySpawnData("Fast", 8),
+                    new EnemySpawnData("Swarm", 28)
+                }),
+
+                new WaveData(0.1f, 5f, new EnemySpawnData[]
+                {
+                    new EnemySpawnData("Basic", 15),
+                    new EnemySpawnData("Tank", 10)
+                }),
+
+                new WaveData(0.1f, 5f, new EnemySpawnData[]
+                {
+                    new EnemySpawnData("Swarm", 30),
+                    new EnemySpawnData("Tank", 15)
+                }),
+
+                new WaveData(0.1f, 0f, new EnemySpawnData[]
+                {
+                    new EnemySpawnData("Boss", 3),
+                    new EnemySpawnData("Tank", 15),
+                    new EnemySpawnData("Swarm", 30)
+                })
             };
         }
 
         return new WaveData[]
         {
-            new WaveData("Basic", 5, 0.5f, 0f)
-        };
-    }
-
-    IEnumerator SpawnSequence(WaveData[] waves)
-    {
-        foreach (WaveData wave in waves)
-        {
-            yield return StartCoroutine(SpawnWave(wave));
-            yield return new WaitForSeconds(wave.waitAfterWave);
-        }
-    }
-
-    IEnumerator SpawnWave(WaveData wave)
-    {
-        GameObject prefab = GetEnemyPrefab(wave.enemyType);
-
-        for (int i = 0; i < wave.count; i++)
-        {
-            GameObject enemy = Instantiate(prefab, spawnPoint.position, Quaternion.identity);
-
-            EnemyMovement movement = enemy.GetComponent<EnemyMovement>();
-            if (movement != null)
+            new WaveData(0.1f, 0f, new EnemySpawnData[]
             {
-                movement.waypoints = waypoints;
-            }
-
-            GameManager.Instance.RegisterEnemySpawn();
-
-            yield return new WaitForSeconds(wave.spawnDelay);
-        }
-    }
-
-    GameObject GetEnemyPrefab(string enemyType)
-    {
-        switch (enemyType)
-        {
-            case "Basic":
-                return basicEnemyPrefab;
-
-            case "Fast":
-                return fastEnemyPrefab;
-
-            case "Swarm":
-                return swarmEnemyPrefab;
-
-            case "Tank":
-                return tankEnemyPrefab;
-
-            case "Boss":
-                return bossEnemyPrefab;
-
-            default:
-                return basicEnemyPrefab;
-        }
+                new EnemySpawnData("Basic", 10)
+            })
+        };
     }
 }

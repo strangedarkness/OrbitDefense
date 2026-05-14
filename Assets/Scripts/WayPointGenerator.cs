@@ -8,7 +8,7 @@ public class WaypointGenerator : MonoBehaviour
     public Transform spawnPointModel;
     public Transform baseModel;
 
-    void Start()
+    void Awake()
     {
         LevelPathData data = GetLevelPathData();
 
@@ -61,8 +61,7 @@ public class WaypointGenerator : MonoBehaviour
                 new Vector3[]
                 {
                     new Vector3(-10f, 1f, 0f),
-                    new Vector3(0f, 1f, 0f),
-                    new Vector3(0f, 1f, -10f),
+                    new Vector3(10f, 1f, 0f),
                     new Vector3(10f, 1f, -10f)
                 }
             );
@@ -71,15 +70,16 @@ public class WaypointGenerator : MonoBehaviour
         if (sceneName == "Level2")
         {
             return new LevelPathData(
-                new Vector3(-12f, 1f, 8f),
+                new Vector3(-12f, 1f, 12f),
                 new Vector3[]
                 {
-                    new Vector3(-12f, 1f, 0f),
-                    new Vector3(-5f, 1f, 0f),
-                    new Vector3(-5f, 1f, 5f),
-                    new Vector3(5f, 1f, 5f),
-                    new Vector3(5f, 1f, -5f),
-                    new Vector3(10f, 1f, -10f)
+                    new Vector3(-9f, 1f, 9f),
+                    new Vector3(-9f, 1f, 0f),
+                    new Vector3(0f, 1f, 0f),
+                    new Vector3(0f, 1f, -10f),
+                    new Vector3(9f, 1f, -7f),
+                    new Vector3(9f, 1f, 9f),
+                    new Vector3(12f, 1f, 12f)
                 }
             );
         }
@@ -87,20 +87,20 @@ public class WaypointGenerator : MonoBehaviour
         if (sceneName == "Level3")
         {
             return new LevelPathData(
-                new Vector3(-14f, 1f, 10f),
+                new Vector3(-12f, 1f, 12f),
                 new Vector3[]
                 {
-                    new Vector3(-14f, 1f, 4f),
-                    new Vector3(-8f, 1f, 4f),
-                    new Vector3(-8f, 1f, -4f),
-                    new Vector3(0f, 1f, -4f),
-                    new Vector3(0f, 1f, 6f),
-                    new Vector3(10f, 1f, 6f),
-                    new Vector3(10f, 1f, -10f)
+                    new Vector3(-10f, 1f, 8f),
+                    new Vector3(-9f, 1f, -1f),
+                    new Vector3(-1f, 1f, -1f),
+                    new Vector3(-1f, 1f, -10f),
+                    new Vector3(6f, 1f, -8f),
+                    new Vector3(7f, 1f, 1f),
+		    new Vector3(14f, 1f, 2f),
+                    new Vector3(12f, 1f, 12f)
                 }
             );
         }
-
         return new LevelPathData(
             Vector3.zero,
             new Vector3[] { Vector3.zero }
