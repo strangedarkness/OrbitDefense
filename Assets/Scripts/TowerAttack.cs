@@ -52,6 +52,15 @@ public class TowerAttack : MonoBehaviour
     {
         if (target == null) return;
 
+        // 让塔朝向敌人
+        Vector3 dir = target.position - transform.position;
+        dir.y = 0f;
+
+        if (dir != Vector3.zero)
+        {
+            transform.forward = dir;
+        }
+
         fireTimer -= Time.deltaTime;
 
         if (fireTimer <= 0f)

@@ -20,6 +20,12 @@ public class EnemyMovement : MonoBehaviour
 
         Transform target = waypoints[currentWaypoint];
 
+	Vector3 dir = (target.position - transform.position).normalized;
+	if (dir != Vector3.zero)
+	{
+    	    transform.forward = dir;
+	}
+
         transform.position = Vector3.MoveTowards(
             transform.position,
             target.position,
